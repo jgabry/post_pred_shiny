@@ -6,36 +6,36 @@ shinyServer(function(input, output) {
   output$y_from_R <- renderUI({
     choices <- objects(envir = .GlobalEnv)
     selectizeInput("y_name", label = "", choices = c("", choices), 
-                 options = list(placeholder = "y: data vector"))
+                 options = list(placeholder = "data vector"))
   })
 
   output$X_from_R <- renderUI({
     choices <- objects(envir = .GlobalEnv)
     selectizeInput("X_name", label = "", choices = c("", choices), 
-                 options = list(placeholder = "X: model matrix"))
+                 options = list(placeholder = "model matrix"))
   })
 
   output$beta_from_R <- renderUI({
     choices <- objects(envir = .GlobalEnv)
     selectizeInput("beta_name", label = "", choices = c("", choices), 
-                 options = list(placeholder = "beta: coefficient samples"))
+                 options = list(placeholder = "coefficient samples"))
   })
 
   output$sigma_from_R <- renderUI({
     choices <- objects(envir = .GlobalEnv)
     selectizeInput("sigma_name", label = "", choices = c("", choices), 
-                 options = list(placeholder = "sigma: sd samples"))
+                 options = list(placeholder = "sd samples"))
   })
 
   output$replications <- renderUI({
-    numericInput("nReps", label = "Number of replicated data sets", value = 500, step = 50)
+    numericInput("nReps", label = withMathJax("Number of replicated data vectors \\(\\mathbf{y}_{rep}\\) to generate"), value = 500, step = 50)
   })
 
   output$select_plot <- renderUI({
 #     selectizeInput("plot", label = "Select a plot", choices = 1:6)
     fluidRow(
       column(5, 
-        sliderInput("plot", label = "Select a plot or press play to cycle", min = 1, max = 6, value = 1, step = 1,
+        sliderInput("plot", label = h5("Select a plot or press play to cycle through the options"), min = 1, max = 6, value = 1, step = 1,
                     animate = animationOptions(interval = 2500, loop = TRUE, playButton = NULL, pauseButton = NULL))
       )
     )

@@ -2,7 +2,7 @@
 # sample from the posterior distribution in a simple Bayesian linear regression
 # model. Then we launch the shiny app.
 
-library(rstan)
+library(rstan) # see mc-stan.org if you need to install the rstan package
 library(shiny)
 
 
