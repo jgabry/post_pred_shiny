@@ -1,18 +1,9 @@
-
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
-
 library(shiny)
 
 shinyServer(function(input, output) {  
   
 # ui outputs --------------------------------------------------------------
   output$y_from_R <- renderUI({
-  #     choices <- Filter(function(x) "numeric" %in% class(get(x)), 
-  #                   objects(envir = .GlobalEnv))
     choices <- objects(envir = .GlobalEnv)
     selectizeInput("y_name", label = "", choices = c("", choices), 
                  options = list(placeholder = "y: data vector"))
@@ -53,9 +44,9 @@ shinyServer(function(input, output) {
   output$plot <- renderUI({
     which_plot <- as.numeric(input$plot)
     plot_names <- c("plot_hists_rep_vs_obs",
+                    "plot_dens_sample_reps",
                     "plot_obs_vs_avg_y_hat", 
                     "plot_obs_vs_avg_y_rep",
-                    "plot_dens_sample_reps",
                     "plot_avg_fitted_vs_avg_resid",
                     "plot_avg_rep_vs_avg_resid_rep"
                     ) 
@@ -68,9 +59,9 @@ shinyServer(function(input, output) {
   output$plot_description <- renderUI({
     which_plot <- as.numeric(input$plot)
     descriptions <- c("Histograms of observed data (black) and a random sample of replications (gray)",
+                    "Density of observed data (purple) and a random sample of 20 replications",
                     "Observed data vs average fitted value (y vs. mean[y_hat])",
                     "Observed data vs average simulated value (y vs. mean[y_rep])",
-                    "Density of observed data (purple) and a random sample of 20 replications",
                     "Average fitted value vs average residual (mean[y_hat] vs mean[y - y_hat])",
                     "Average simulated value vs average residual (mean[y_rep] vs mean[y - y_rep])")
     helpText(descriptions[which_plot])
@@ -126,7 +117,7 @@ shinyServer(function(input, output) {
     y <- get(input$y_name)
     avg_y_hat <- get_avg_y_hat(y_hat())
     
-    plot(y, avg_y_hat, xlab = "Observed", ylab = "Avg. Fitted", bty = "l")  
+    plot(y, avg_y_hat, xlab = "Observed", ylab = "Avg. Fitted", bty = "l", col = "maroon")  
   })
 
   output$plot_obs_vs_avg_y_rep <- renderPlot({
@@ -138,7 +129,7 @@ shinyServer(function(input, output) {
     }
     avg_y_rep <- get_avg_y_rep(y_rep)
   
-    plot(y, avg_y_rep, xlab = "Observed", ylab = "Avg. Simulated", bty = "l")  
+    plot(y, avg_y_rep, xlab = "Observed", ylab = "Avg. Simulated", bty = "l", col = "maroon")  
   })
 
   output$plot_dens_sample_reps <- renderPlot({
@@ -149,7 +140,8 @@ shinyServer(function(input, output) {
     y_rep_20 <- y_rep[sample(nrow(y_rep), 20) ,]
     ymax <- max(c(density(y_rep_20)$y, density(y)$y))
     
-    plot(density(y_rep_20[1,]), ylim = c(0, ymax+0.05), bty = "l")
+    plot(density(y_rep_20[1,]), ylim = c(0, ymax+0.05), bty = "l", 
+         xlab = "Value", main = "")
     for (i in 2:20) lines(density(y_rep_20[i,]))
     lines(density(y), col = "purple", lwd = 3)
   })
@@ -162,7 +154,7 @@ shinyServer(function(input, output) {
     y_hat <- y_hat()
     avg_resids <- get_avg_resids_hat(y, y_hat)
     avg_y_hat <- get_avg_y_hat(y_hat)
-    plot(avg_y_hat, avg_resids, bty = "l")
+    plot(avg_y_hat, avg_resids, bty = "l", col = "maroon")
   })
 
   output$plot_avg_rep_vs_avg_resid_rep <- renderPlot({    
@@ -171,7 +163,7 @@ shinyServer(function(input, output) {
     y_rep <- y_rep()
     avg_resids_rep <- get_avg_resids_rep(y, y_rep)
     avg_y_rep <- get_avg_y_rep(y_rep)
-    plot(avg_y_rep, avg_resids_rep, bty = "l")
+    plot(avg_y_rep, avg_resids_rep, bty = "l", col = "maroon")
   })
 
   output$plot_hists_rep_vs_obs <- renderPlot({    
