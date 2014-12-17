@@ -8,7 +8,7 @@ library(shiny)
 # create fake data --------------------------------------------------------
 
 # number of observations 
-N <- 250
+N <- 500
 
 # covariates
 X1 <- rnorm(N)
@@ -46,7 +46,7 @@ posterior_sample <- function(beta_hat, v1, v2, At) {
   draws <- c(beta, sigma2)
   draws
 }
-
+# take 1000 draws from posterior
 posterior <- t(replicate(n = 1e3, posterior_sample(beta_hat, v1, v2, At)))
 
 colnames(posterior) <- c(names(beta_hat), "sigma2")
