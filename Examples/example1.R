@@ -25,29 +25,30 @@ K <- ncol(X)
 # generate fake outcome y
 b <- c(2, -1/4, 1/2, 5/2) # pick some coefficients
 m <- X %*% b # calculate mean
-s <- 3 # pick an sd
+s <- 2 # pick an sd
 y <- rnorm(N, mean =  m, sd = s) # generate y values
 
 # run OLS and extract estimates
 OLS <- lm(y ~ X1 + X2 + X3)
-beta_hat <- coef(OLS)
-sigma2_hat  <- sum( (y - X %*% beta_hat)^2 ) / (N - K)
+beta_hat <- coef(OLS) # coefficient estimates
+sigma2_hat  <- sum( (y - X %*% beta_hat)^2 ) / (N - K) # variance estimate
 
 
 # sample from posterior distribution under vague prior ------------------
 v1 <- N - K
 v2 <- v1*sigma2_hat
-At <- t(chol(solve(t(X)%*%X)))
+At <- t(chol(solve(t(X)%*%X))) # note: %*% = matrix multiplication, t() = transpose, solve() = inverse, chol() = cholesky factorization 
 
 posterior_sample <- function(beta_hat, v1, v2, At) { 
   # draw sigma2 from inv-gamma distribution 
   sigma2 <- 1 / rgamma(1, shape =  v1/2, rate = v2/2)
   
   # draw beta from MVN distribution given value of sigma2 
-  beta <- beta_hat + sqrt(sigma2)*(At %*% rnorm(length(beta_hat)))
+  z <- rnorm(length(beta_hat))
+  beta <- beta_hat + sqrt(sigma2)*(At %*% z)
   
-  draws <- c(beta, sigma2)
-  draws
+  # return beta and sigma2
+  c(beta, sigma2)
 }
 # take 1000 draws from posterior
 posterior <- t(replicate(n = 1e3, posterior_sample(beta_hat, v1, v2, At)))
