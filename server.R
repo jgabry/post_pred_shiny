@@ -63,82 +63,11 @@ shinyServer(function(input, output) {
                  options = list(placeholder = "sd samples"))
   })
 
-#   output$replications <- renderUI({
-#     numericInput("nReps", label = withMathJax("Number of replicated data vectors \\(\\mathbf{y}_{rep}\\) to generate"), value = 500, step = 50)
-#   })
-
   output$select_plot <- renderUI({
     selectizeInput("plot", label = h5(style = "color: #5b391e;", "Select a plot"), choices = plot_choices,
                    width = "400px")
-#     fluidRow(
-#       column(5, 
-#         sliderInput("plot", label = h5("Select a plot or press play to cycle through the options"), min = 1, max = 6, value = 1, step = 1,
-#                     animate = animationOptions(interval = 2500, loop = TRUE, playButton = NULL, pauseButton = NULL))
-#       )
-#     )
   })
   
-  output$plot <- renderUI({
-    if (is.null(input$plot)) return()
-    
-    which_plot <- as.numeric(input$plot)
-    plot <- plot_names[which_plot]    
-    plotOutput(plot)
-  })
-
-  output$resample_hist <- renderUI({
-    if (is.null(input$plot)) return(wellPanel())
-    
-    which_plot <- as.numeric(input$plot)
-    if (which_plot == 1) {
-      return(
-          actionButton("resample_hist_go", label = strong(style = "font-size: 10px; color: #66bbae", "Resample replications"), icon = icon("refresh"))
-        )
-    }
-    return()
-  })
-
-  output$resample_resids <- renderUI({
-    if (is.null(input$plot)) return(wellPanel())
-  
-    which_plot <- as.numeric(input$plot)
-    if (which_plot == 4) {
-      return(
-        actionButton("resample_resids_go", label = strong(style = "font-size: 10px; color: #66bbae", "Resample replications"), icon = icon("refresh"))
-      )
-    }
-    return()
-  })
-
-  output$resample_dens <- renderUI({
-    if (is.null(input$plot)) return(wellPanel())
-    
-    which_plot <- as.numeric(input$plot)
-    if (which_plot == 2) {
-      return(
-        actionButton("resample_dens_go", label = strong(style = "font-size: 10px; color: #66bbae", "Resample replications"), icon = icon("refresh"))
-      )
-    }
-    return()
-  })
-
-  output$plot_description <- renderUI({
-    which_plot <- as.numeric(input$plot)
-
-#                     "Compare min and max of replications to observed data",
-#                     "Compare mean and sd of replications to observed data")
-    helpText(withMathJax(plot_descriptions[which_plot]))
-  })
-
-  output$plot_details <- renderUI({
-    if (is.null(input$plot)) return(NULL)
-    
-    which_plot <- as.numeric(input$plot)
-    plot_name <- plot_names[which_plot]
-    plot_details[[plot_name]]
-  })
-
-
 
 # functions ---------------------------------------------------------------
   y_hat <- reactive({
