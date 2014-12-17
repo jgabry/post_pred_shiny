@@ -344,45 +344,43 @@ shinyServer(function(input, output) {
     
     
     par(mfrow = c(2,2), cex.main = 1.5)
-    
     hist(mean_y_rep, border = "white", col = "skyblue", freq = FALSE,
          xlab = expression(mean(y^rep)), yaxt = "n", ylab = "", main = "Mean")
     axis(side = 1, lwd = 4)
-    abline(v = mean_y, col = "purple", lty = 2, lwd = 2)
-    abline(v = mean(mean_y_rep), lty = 1, lwd = 2)
-    mtext(expression(paste("Observed ", mean(y))), side = 3, line = 1, adj = 0, col = "purple")
-    mtext(expression(paste("Avg ", mean(y^rep))), side = 3, line = 2, adj = 0)
-    
+    abline(v = mean_y, col = "purple", lty = 1, lwd = 2)
+#     abline(v = mean(mean_y_rep), lty = 2, lwd = 2)
+#     mtext(expression(paste("Observed ", mean(y))), side = 3, line = 1, adj = 0, col = "purple")
+#     mtext(expression(paste("Avg ", mean(y^rep))), side = 3, line = 2, adj = 0)
+   
     
     hist(sd_y_rep, border = "white", col = "skyblue", freq = FALSE,
-         xlab = expression(sd(y^rep)), yaxt = "n", ylab = "", main = "Std. Dev.")
+         xlab = expression(sd(y^rep)), yaxt = "n", ylab = "", main = "Standard Deviation")
     axis(side = 1, lwd = 4)
-    abline(v = sd(y), col = "purple", lty = 2, lwd = 2)
-    abline(v = mean(sd_y_rep), lty = 1, lwd = 2)
-    mtext(expression(paste("Observed ", sd(y))), side = 3, line = 1, adj = 0, col = "purple")
-    mtext(expression(paste("Avg ", sd(y^rep))), side = 3, line = 2, adj = 0)
+    abline(v = sd(y), col = "purple", lty = 1, lwd = 2)
+#     abline(v = mean(sd_y_rep), lty = 2, lwd = 2)
+#     mtext(expression(paste("Observed ", sd(y))), side = 3, line = 1, adj = 0, col = "purple")
+#     mtext(expression(paste("Avg ", sd(y^rep))), side = 3, line = 2, adj = 0)
     
     hist(min_y_rep, border = "white", col = "skyblue", freq = FALSE,
-         xlab = expression(min((y^rep))), yaxt = "n", ylab = "", main = "Min")
+         xlab = expression(min((y^rep))), yaxt = "n", ylab = "", main = "Minimum")
     axis(side = 1, lwd = 4)
-    abline(v = min_y, col = "purple", lty = 2, lwd = 2)
-    abline(v = mean(min_y_rep), lty = 1, lwd = 2)
-    
-    mtext(expression(paste("Osberved ",min((y)))), 
-          side = 3, line = 1, adj = 0, col = "purple")
-    mtext(expression(paste("Avg. ", min((y^rep)))),
-          side = 3, line = 2, adj = 0)
+    abline(v = min_y, col = "purple", lty = 1, lwd = 2)
+#     abline(v = mean(min_y_rep), lty = 2, lwd = 2)
+#     mtext(expression(paste("Osberved ",min((y)))), 
+#           side = 3, line = 1, adj = 0, col = "purple")
+#     mtext(expression(paste("Avg. ", min((y^rep)))),
+#           side = 3, line = 2, adj = 0)
     
     
     hist(max_y_rep, border = "white", col = "skyblue", freq = FALSE,
-         xlab = expression(max((y^rep))), yaxt = "n", ylab = "", main = "Max")
+         xlab = expression(max((y^rep))), yaxt = "n", ylab = "", main = "Maximum")
     axis(side = 1, lwd = 4)
-    abline(v = max_y, col = "purple", lty = 2, lwd = 2)
-    abline(v = mean(max_y_rep), lty = 1, lwd = 2)
-    mtext(expression(paste("Osberved ",max((y)))), 
-          side = 3, line = 1, adj = 0, col = "purple")
-    mtext(expression(paste("Avg. ", max((y^rep)))),
-          side = 3, line = 2, adj = 0)
+    abline(v = max_y, col = "purple", lty = 1, lwd = 2)
+#     abline(v = mean(max_y_rep), lty = 2, lwd = 2)
+#     mtext(expression(paste("Osberved ",max((y)))), 
+#           side = 3, line = 1, adj = 0, col = "purple")
+#     mtext(expression(paste("Avg. ", max((y^rep)))),
+#           side = 3, line = 2, adj = 0)
     
     
     par(mfrow = c(1,1))
