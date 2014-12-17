@@ -1,6 +1,7 @@
 # In this example we use we the rstan package (the R interface to Stan) to
 # sample from the posterior distribution in a simple Bayesian linear regression
-# model. Then we launch the shiny app.
+# model. Then we launch the shiny app. If you don't want to use Stan check out
+# the other example. 
 
 library(rstan) # see mc-stan.org if you need to install the rstan package
 library(shiny)
