@@ -68,13 +68,14 @@ shinyServer(function(input, output) {
 #   })
 
   output$select_plot <- renderUI({
-#     selectizeInput("plot", label = "Select a plot", choices = 1:6)
-    fluidRow(
-      column(5, 
-        sliderInput("plot", label = h5("Select a plot or press play to cycle through the options"), min = 1, max = 6, value = 1, step = 1,
-                    animate = animationOptions(interval = 2500, loop = TRUE, playButton = NULL, pauseButton = NULL))
-      )
-    )
+    selectizeInput("plot", label = h5(style = "color: #5b391e;", "Select a plot"), choices = plot_choices,
+                   width = "400px")
+#     fluidRow(
+#       column(5, 
+#         sliderInput("plot", label = h5("Select a plot or press play to cycle through the options"), min = 1, max = 6, value = 1, step = 1,
+#                     animate = animationOptions(interval = 2500, loop = TRUE, playButton = NULL, pauseButton = NULL))
+#       )
+#     )
   })
   
   output$plot <- renderUI({
@@ -91,7 +92,7 @@ shinyServer(function(input, output) {
     which_plot <- as.numeric(input$plot)
     if (which_plot == 1) {
       return(
-          actionButton("resample_hist_go", label = strong(style = "color: #66bbae", "Show new set of replications"))
+          actionButton("resample_hist_go", label = strong(style = "font-size: 10px; color: #66bbae", "Resample replications"), icon = icon("refresh"))
         )
     }
     return()
@@ -103,7 +104,7 @@ shinyServer(function(input, output) {
     which_plot <- as.numeric(input$plot)
     if (which_plot == 4) {
       return(
-        actionButton("resample_resids_go", label = strong(style = "color: #66bbae", "Show new set of replications"))
+        actionButton("resample_resids_go", label = strong(style = "font-size: 10px; color: #66bbae", "Resample replications"), icon = icon("refresh"))
       )
     }
     return()
@@ -115,7 +116,7 @@ shinyServer(function(input, output) {
     which_plot <- as.numeric(input$plot)
     if (which_plot == 2) {
       return(
-        actionButton("resample_dens_go", label = strong(style = "color: #66bbae", "Show new set of replications"))
+        actionButton("resample_dens_go", label = strong(style = "font-size: 10px; color: #66bbae", "Resample replications"), icon = icon("refresh"))
       )
     }
     return()
@@ -343,6 +344,24 @@ shinyServer(function(input, output) {
     
     
     par(mfrow = c(2,2), cex.main = 1.5)
+    
+    hist(mean_y_rep, border = "white", col = "skyblue", freq = FALSE,
+         xlab = expression(mean(y^rep)), yaxt = "n", ylab = "", main = "Mean")
+    axis(side = 1, lwd = 4)
+    abline(v = mean_y, col = "purple", lty = 2, lwd = 2)
+    abline(v = mean(mean_y_rep), lty = 1, lwd = 2)
+    mtext(expression(paste("Observed ", mean(y))), side = 3, line = 1, adj = 0, col = "purple")
+    mtext(expression(paste("Avg ", mean(y^rep))), side = 3, line = 2, adj = 0)
+    
+    
+    hist(sd_y_rep, border = "white", col = "skyblue", freq = FALSE,
+         xlab = expression(sd(y^rep)), yaxt = "n", ylab = "", main = "Std. Dev.")
+    axis(side = 1, lwd = 4)
+    abline(v = sd(y), col = "purple", lty = 2, lwd = 2)
+    abline(v = mean(sd_y_rep), lty = 1, lwd = 2)
+    mtext(expression(paste("Observed ", sd(y))), side = 3, line = 1, adj = 0, col = "purple")
+    mtext(expression(paste("Avg ", sd(y^rep))), side = 3, line = 2, adj = 0)
+    
     hist(min_y_rep, border = "white", col = "skyblue", freq = FALSE,
          xlab = expression(min((y^rep))), yaxt = "n", ylab = "", main = "Min")
     axis(side = 1, lwd = 4)
@@ -365,23 +384,6 @@ shinyServer(function(input, output) {
     mtext(expression(paste("Avg. ", max((y^rep)))),
           side = 3, line = 2, adj = 0)
     
-    
-    hist(mean_y_rep, border = "white", col = "skyblue", freq = FALSE,
-         xlab = expression(mean(y^rep)), yaxt = "n", ylab = "", main = "Mean")
-    axis(side = 1, lwd = 4)
-    abline(v = mean_y, col = "purple", lty = 2, lwd = 2)
-    abline(v = mean(mean_y_rep), lty = 1, lwd = 2)
-    mtext(expression(paste("Observed ", mean(y))), side = 3, line = 1, adj = 0, col = "purple")
-    mtext(expression(paste("Avg ", mean(y^rep))), side = 3, line = 2, adj = 0)
-    
-    
-    hist(sd_y_rep, border = "white", col = "skyblue", freq = FALSE,
-         xlab = expression(sd(y^rep)), yaxt = "n", ylab = "", main = "Std. Dev.")
-    axis(side = 1, lwd = 4)
-    abline(v = sd(y), col = "purple", lty = 2, lwd = 2)
-    abline(v = mean(sd_y_rep), lty = 1, lwd = 2)
-    mtext(expression(paste("Observed ", sd(y))), side = 3, line = 1, adj = 0, col = "purple")
-    mtext(expression(paste("Avg ", sd(y^rep))), side = 3, line = 2, adj = 0)
     
     par(mfrow = c(1,1))
     

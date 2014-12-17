@@ -1,3 +1,30 @@
+plot_choices <- list(
+  "Compare observed data to replications"  = 
+    list(
+      "Histograms: obs vs replications" = 1,
+      "Densities: obs vs replications" = 2,
+      "Scatter: obs vs avg replicated" = 3
+      ),
+  "Residuals" = 
+    list(
+      "Histogram: residuals vs normal density" = 4,
+      "Scatter: avg replicated vs avg residual" = 5
+      ),
+  "Distributions of test statistics" = 
+    list(
+      "Histograms: test statistics" = 6
+      )
+)
+#   
+#   "Histograms: obs vs replications" = 1,
+#   "Densities: obs vs replications" = 2,
+#   "Scatter: obs vs avg replicated" = 3,
+#   "Histogram: residuals" = 4,
+#   "Scatter: avg replicated vs avg residual" = 5,
+#   "Histograms: test statistics" = 6
+#   )
+
+
 plot_names <- c("plot_hists_rep_vs_obs",
                 "plot_dens_sample_reps",
                 "plot_obs_vs_avg_y_rep",
@@ -18,6 +45,7 @@ plot_descriptions <- c("Histograms of observed data and a random sample of repli
 plot_details <- list(
   plot_hist_resids = 
     wellPanel(
+      h5("Making this plot: "),
       withMathJax("1) Draw a single set of values \\(\\beta^\\star, \\sigma^\\star \\) from the posterior"),
       br(),
       withMathJax("2) Given \\(\\beta^\\star, \\sigma^\\star \\) draw a vector \\(y^{rep} \\) from the posterior predictive distribution"), 
@@ -29,6 +57,7 @@ plot_details <- list(
   
   plot_hists_rep_vs_obs = 
     wellPanel(
+      h5("Making this plot: "),
       withMathJax("1) Draw \\(S\\) sets of values \\(\\beta^{[s]}, \\sigma^{[s]} \\) from the posterior"),
       br(),
       withMathJax("2) For each of the \\(S\\) draws from the posterior draw a vector \\(y^{rep}\\) from the posterior predictive distribution"), 
@@ -38,6 +67,7 @@ plot_details <- list(
   
   plot_dens_sample_reps = 
     wellPanel(
+      h5("Making this plot: "),
       withMathJax("1) Draw \\(S\\) sets of values \\(\\beta^{[s]}, \\sigma^{[s]} \\) from the posterior"),
       br(),
       withMathJax("2) For each of the \\(S\\) draws from the posterior draw a vector \\(y^{rep}\\) from the posterior predictive distribution"), 
@@ -47,6 +77,7 @@ plot_details <- list(
   
   plot_test_statistics = 
     wellPanel(
+      h5("Making this plot: "),
       withMathJax("1) Draw \\(S\\) sets of values \\(\\beta^{[s]}, \\sigma^{[s]} \\) from the posterior"),
       br(),
       withMathJax("2) For each of the \\(S\\) draws from the posterior draw a vector \\(y^{rep}\\) from the posterior predictive distribution"), 
