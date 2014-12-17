@@ -10,7 +10,7 @@ library(shiny)
 # Create fake data --------------------------------------------------------
 
 # number of observations 
-N <- 250
+N <- 500
 
 # covariates
 X1 <- rnorm(N)
@@ -50,16 +50,15 @@ parameters {
 }
 model {
   # write our model 
-  beta ~ normal(0, 5) ;       # prior for beta
+  beta ~ normal(0, 10) ;      # prior for betas
   sigma ~ cauchy(0, 5) ;      # prior for sigma
-  y ~ normal(X*beta, sigma) ; # likelihood 
+  y ~ normal(X*beta, sigma) ; # likelihood (note: Stan knows X*beta is matrix times vector multiplication)
 }
 "
 
 # run it
-posterior <- stan(model_code = stan_model, data = stan_data, 
-                  chains = 4, iter = 500)
-
+posterior <- stan(model_code = stan_model, data = stan_data, chains = 4)
+print(posterior)
 
 # extract the posterior samples
 samples <- extract(posterior)

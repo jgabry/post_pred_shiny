@@ -70,14 +70,6 @@ shinyServer(function(input, output) {
   
 
 # functions ---------------------------------------------------------------
-  y_hat <- reactive({
-    X <- get(input$X_name)
-    beta <- get(input$beta_name)
-    nIter <- nrow(beta)
-    out <- sapply(1:nIter, function(i) X%*%beta[i,])
-    out
-  })
-
   y_rep <- reactive({
     y <- get(input$y_name)
     X <- get(input$X_name)
@@ -91,18 +83,16 @@ shinyServer(function(input, output) {
     out
   })
 
-  get_avg_y_hat <- function(y_hat) {
-    apply(y_hat, 1, mean)
-  }
+  y_hat <- reactive({
+    X <- get(input$X_name)
+    beta <- get(input$beta_name)
+    nIter <- nrow(beta)
+    out <- sapply(1:nIter, function(i) X%*%beta[i,])
+    out
+  })
+
   get_avg_y_rep <- function(y_rep) {
     apply(y_rep, 1, mean)
-  }
-#   get_avg_resids_hat <- function(y, y_hat) {
-#     rowMeans(y_hat - y)
-#   }
-
-  get_resids <- function(y, y_rep) {
-    y - y_rep
   }
   
   get_avg_resids <- function(y, y_rep) {
@@ -114,19 +104,12 @@ shinyServer(function(input, output) {
   # tests for inputs
   tests <- reactive({
     t1 <- need(input$y_name != "", message = "Waiting for y: vector of observations \n")
-    t2 <- need(input$X_name != "", message = "Waiting for X: model matrix with first column just ones (for intercept) \n")
+    t2 <- need(input$X_name != "", message = "Waiting for X: model matrix (with column of 1s for intercept) \n")
     t3 <- need(input$beta_name != "", message = "Waiting for beta: matrix of posterior samples of regression coefficients \n")
     t4 <- need(input$sigma_name != "", message = "Waiting for sigma: vector of posterior samples of the standard deviation \n")
     validate(t1, t2, t3, t4)
   })
 
-#   output$plot_obs_vs_avg_y_hat <- renderPlot({
-#     tests()
-#     y <- get(input$y_name)
-#     avg_y_hat <- get_avg_y_hat(y_hat())
-#     
-#     plot(y, avg_y_hat, xlab = "Observed", ylab = "Avg. Fitted", bty = "l", col = "maroon")  
-#   })
 
   sample_id_for_resids <- reactive({
     go <- input$resample_resids_go          
@@ -181,23 +164,6 @@ shinyServer(function(input, output) {
     tests()
     y <- get(input$y_name)
     y_rep <- y_rep()
-    
-#     sample_ids <- sample_ids_for_dens()
-#     y_rep_20 <- y_rep[, sample_ids]
-#     ymax20 <- max(c(density(y_rep_20)$y, density(y)$y))
-    
-#     par(mfrow = c(1, 2))
-
-#     plot(density(y_rep_20[,1]), ylim = c(0, ymax20+0.05), bty = "l", col = "gray",
-#          xlab = "y", main = "")
-#     for (i in 2:20) lines(density(y_rep_20[,i]), col = "gray")
-#     lines(density(y), col = "purple", lwd = 3)
-#     
-#     axis(side = 1, lwd = 4)
-#     axis(side = 2, lwd = 4)
-#     box(lwd = 4, bty = "l")
-
-
     sample_ids <- sample_ids_for_dens()
     y_rep_50 <- y_rep[, sample_ids]
     ymax <- max(c(density(y_rep_50)$y, density(y)$y))
@@ -213,8 +179,6 @@ shinyServer(function(input, output) {
     
   })
   
-
-  # check figure 6.11 in Gelman et al. (2013).
   output$plot_avg_rep_vs_avg_resid_rep <- renderPlot({    
     tests()
     y <- get(input$y_name)
@@ -242,13 +206,11 @@ shinyServer(function(input, output) {
     tests()
     y <- get(input$y_name)
     y_rep <- y_rep()
-#     sample_ids <- sample(nrow(y_rep), 11)  
     sample_ids <- sample_ids()
-#     y_rep_samp <- y_rep[sample_ids, ]
     y_rep_samp <- y_rep[, sample_ids]
     par(mfrow = c(3,3), cex.main = 1.5)
     hist(y, border = "white", col = "purple", ylab = "", yaxt = "n", main = "Observed y")
-    for (i in 1:8) hist(y_rep_samp[,i], # hist(y_rep_samp[i,],
+    for (i in 1:8) hist(y_rep_samp[,i], 
                         main = bquote(paste(y^rep, " #", .(sample_ids[i]))),
                         border = "white", col = "skyblue",
                         xlab = "y",
