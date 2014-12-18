@@ -2,8 +2,11 @@
 # sigma^2 in a simple Bayesian linear regression model. Then we launch the shiny
 # app.
 
-library(shiny)
+# if you don't have shiny installed do: 
+# install.packages("shiny")
 
+
+library(shiny)
 
 # create fake data --------------------------------------------------------
 
